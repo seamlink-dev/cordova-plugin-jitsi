@@ -47,5 +47,12 @@
 	<framework src="./framework/JitsiMeet.framework" custom="true" embed="true" />
 	<framework src="./framework/WebRTC.framework"    custom="true" embed="true" />
 
+        <config-file target="*-Info.plist" parent="UIBackgroundModes">
+            <array>
+                <string>audio</string>
+                <string>voip</string>
+            </array>
+        </config-file>
+
     </platform>
 </plugin>
