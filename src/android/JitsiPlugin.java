@@ -72,7 +72,7 @@ public class JitsiPlugin extends CordovaPlugin
       this.roomId = args.getString(1);
       this.audioOnly = args.getBoolean(2);
       this.token = args.getString(3);
-      this.join(serverUrl, roomId, audioOnly, token);
+      this.callJoin(serverUrl, roomId, audioOnly, token);
       return true;
     } else if (action.equals(DESTROY_ACTION)) {
       this.destroy(callbackContext);
