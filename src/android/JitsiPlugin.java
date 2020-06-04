@@ -35,8 +35,17 @@ public class JitsiPlugin extends CordovaPlugin
 
 
   final static String[] permissions = { Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO };
+  public static final int PERMISSION_DENIED_ERROR = 20;
   public static final int TAKE_PIC_SEC = 0;
   public static final int REC_MIC_SEC = 1;
+
+  private static final String JOIN_ACTION = "join";
+  private static final String DESTROY_ACTION = "join";
+
+  private String serverUrl;
+  private String roomId;
+  private boolean audioOnly;
+  private String token;
 
   private String _conferenceState = "";
 
@@ -55,24 +64,24 @@ public class JitsiPlugin extends CordovaPlugin
     // so we must
     // check the package info to determine if the permission is present.
     _conferenceState = JitsiPluginModel.getInstance().getState();
-    checkPermission();
 
     _callback = callbackContext;
 
-    if (action.equals("join")) {
-      String serverUrl = args.getString(0);
-      String roomId = args.getString(1);
-      Boolean audioOnly = args.getBoolean(2);
-      this.join(serverUrl, roomId, audioOnly);
+    if (action.equals(JOIN_ACTION)) {
+      this.serverUrl = args.getString(0);
+      this.roomId = args.getString(1);
+      this.audioOnly = args.getBoolean(2);
+      this.token = args.getString(3);
+      this.join(serverUrl, roomId, audioOnly, token);
       return true;
-    } else if (action.equals("destroy")) {
+    } else if (action.equals(DESTROY_ACTION)) {
       this.destroy(callbackContext);
       return true;
     }
     return false;
   }
 
-  private void checkPermission() {
+  private void callJoin(String serverUrl, String roomId, Boolean audioOnly, String token) {
     boolean takePicturePermission = PermissionHelper.hasPermission(this, Manifest.permission.CAMERA);
     boolean micPermission = PermissionHelper.hasPermission(this, Manifest.permission.RECORD_AUDIO);
 
@@ -113,9 +122,31 @@ public class JitsiPlugin extends CordovaPlugin
       PermissionHelper.requestPermissions(this, TAKE_PIC_SEC,
           new String[] { Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO });
     }
+    else{
+      this.join(serverUrl, roomId, audioOnly, token);
+    }
   }
 
-  private void join(final String serverUrl, final String roomId, final Boolean audioOnly) {
+  public void onRequestPermissionResult(int requestCode, String[] permissions,
+                                        int[] grantResults) throws JSONException
+  {
+    for(int r:grantResults)
+    {
+      if(r == PackageManager.PERMISSION_DENIED)
+      {
+        this._callback.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, PERMISSION_DENIED_ERROR));
+        return;
+      }
+    }
+    switch(requestCode)
+    {
+      case TAKE_PIC_SEC:
+        join(this.serverUrl, this.roomId, this.audioOnly, this.token);
+        break;
+    }
+  }
+
+  private void join(final String serverUrl, final String roomId, final Boolean audioOnly, final String token) {
     Log.e(TAG, "join called! Server: " + serverUrl + ", room : " + roomId);
 
     cordova.getActivity().runOnUiThread(new Runnable() {
@@ -132,13 +163,14 @@ public class JitsiPlugin extends CordovaPlugin
         JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
             .setRoom(serverUrlObject.getProtocol() + "://" + serverUrlObject.getHost() + "/" +roomId)
             .setSubject(" ")
+            .setToken(token)
             .setAudioOnly(audioOnly)
             .setFeatureFlag("chat.enabled", false)
             .setFeatureFlag("invite.enabled", false)
             .setFeatureFlag("calendar.enabled", false)
             .setWelcomePageEnabled(false).build();
 
-        JitsiMeetPluginActivity.launch(cordova.getActivity(), options);
+        JitsiMeetPluginActivity.launchActivity(cordova.getActivity(), options);
       }
     });
   }
