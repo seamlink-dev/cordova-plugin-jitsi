@@ -21,14 +21,14 @@ public class JitsiMeetPluginActivity extends JitsiMeetActivity {
 
     @Override
     public void onDestroy() {
-        JitsiPluginModel.getInstance().changeState("onConferenceTerminated");
         super.onDestroy();
+        JitsiPluginModel.getInstance().changeState("onConferenceTerminated");
     }
 
     @Override
     public void finish() {
-        JitsiPluginModel.getInstance().changeState("onConferenceTerminated");
         super.finish();
+        JitsiPluginModel.getInstance().changeState("onConferenceTerminated");
     }
 
     @Override
