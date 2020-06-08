@@ -24,7 +24,7 @@ public class JitsiPluginModel {
     }
 
     public void changeState(String state) {
-        if(mListener != null) {
+        if(mListener != null && mState != state) {
             mState = state;
             notifyStateChange();
         }
