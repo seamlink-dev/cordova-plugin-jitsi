@@ -165,7 +165,7 @@ public class JitsiPlugin extends CordovaPlugin
             .setSubject(" ")
             .setToken(token)
             .setAudioOnly(audioOnly)
-            .setFeatureFlag("chat.enabled", false)
+            .setFeatureFlag("chat.enabled", true)
             .setFeatureFlag("invite.enabled", false)
             .setFeatureFlag("calendar.enabled", false)
             .setWelcomePageEnabled(false).build();
