@@ -8,25 +8,24 @@ The original repo is here: https://github.com/findmate/cordova-plugin-jitsi
 # Installation
 `cordova plugin add https://github.com/seamlink-dev/cordova-plugin-jitsi`
 
-## iOS Installation
-On iOS/Xcode you will need to manually specify the WebRTC and JitsiMeet frameworks manually to be embedded.
-
-Example of how to select them here: https://github.com/seamlink-dev/cordova-plugin-jitsi-meet/blob/master/xcode-ios-framework-embed-example.png
-
-
 # Usage
 ```
 const roomId = 'your-custom-room-id';
 
-jitsiplugin.join('https://meet.jit.si/', roomId, false, function (data) {
+jitsiplugin.join('https://meet.jit.si/', roomId, false, (data) => {
+	//CONFERENCE_WILL_JOIN
+    //CONFERENCE_JOINED
+    //CONFERENCE_TERMINATED
+    //CONFERENCE_FINISHED
+    //CONFERENCE_DESTROYED
     if (data === "CONFERENCE_TERMINATED") {
-        jitsiplugin.destroy(function (data) {
+        jitsiplugin.destroy((data) => {
             // call finished
-        }, function (err) {
+        }, f(err) => {
             console.log(err);
         });
     }
-}, function (err) {
+}, (err) => {
     console.log(err);
 });
 ```

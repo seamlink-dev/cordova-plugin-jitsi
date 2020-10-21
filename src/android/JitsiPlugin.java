@@ -9,8 +9,7 @@ import org.apache.cordova.PermissionHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.util.Log;
-import android.content.Context;
+import android.content.Intent;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,6 +26,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import com.facebook.react.modules.core.PermissionListener;
 
+import timber.log.Timber;
+
 public class JitsiPlugin extends CordovaPlugin 
       implements JitsiMeetActivityInterface, JitsiPluginModel.OnJitsiPluginStateListener {
 
@@ -40,7 +41,7 @@ public class JitsiPlugin extends CordovaPlugin
   public static final int REC_MIC_SEC = 1;
 
   private static final String JOIN_ACTION = "join";
-  private static final String DESTROY_ACTION = "join";
+  private static final String DESTROY_ACTION = "destroy";
 
   private String serverUrl;
   private String roomId;
@@ -72,7 +73,11 @@ public class JitsiPlugin extends CordovaPlugin
       this.roomId = args.getString(1);
       this.audioOnly = args.getBoolean(2);
       this.token = args.getString(3);
-      this.callJoin(serverUrl, roomId, audioOnly, token);
+      try {
+	      this.callJoin(serverUrl, roomId, audioOnly, token);
+	  } catch (NameNotFoundException e) {
+          e.printStackTrace();
+      }
       return true;
     } else if (action.equals(DESTROY_ACTION)) {
       this.destroy(callbackContext);
@@ -81,7 +86,7 @@ public class JitsiPlugin extends CordovaPlugin
     return false;
   }
 
-  private void callJoin(String serverUrl, String roomId, Boolean audioOnly, String token) {
+    private void callJoin(String serverUrl, String roomId, Boolean audioOnly, String token) throws NameNotFoundException {
     boolean takePicturePermission = PermissionHelper.hasPermission(this, Manifest.permission.CAMERA);
     boolean micPermission = PermissionHelper.hasPermission(this, Manifest.permission.RECORD_AUDIO);
 
@@ -91,13 +96,12 @@ public class JitsiPlugin extends CordovaPlugin
     // so we must
     // check the package info to determine if the permission is present.
 
-    Log.e(TAG, "tp : " + takePicturePermission);
-    Log.e(TAG, "mp : " + micPermission);
+    Timber.e("tp : %s", takePicturePermission);
+    Timber.e("mp : %s", micPermission);
 
     if (!takePicturePermission) {
       takePicturePermission = true;
 
-      try {
         PackageManager packageManager = this.cordova.getActivity().getPackageManager();
         String[] permissionsInPackage = packageManager.getPackageInfo(this.cordova.getActivity().getPackageName(),
             PackageManager.GET_PERMISSIONS).requestedPermissions;
@@ -110,12 +114,6 @@ public class JitsiPlugin extends CordovaPlugin
             }
           }
         }
-        Log.e(TAG, "10 : ");
-      } catch (NameNotFoundException e) {
-        // We are requesting the info for our package, so this should
-        // never be caught
-        Log.e(TAG, e.getMessage());
-      }
     }
 
     if (!takePicturePermission) {
@@ -138,20 +136,15 @@ public class JitsiPlugin extends CordovaPlugin
         return;
       }
     }
-    switch(requestCode)
-    {
-      case TAKE_PIC_SEC:
+        if (requestCode == TAKE_PIC_SEC) {
         join(this.serverUrl, this.roomId, this.audioOnly, this.token);
-        break;
     }
   }
 
   private void join(final String serverUrl, final String roomId, final Boolean audioOnly, final String token) {
-    Log.e(TAG, "join called! Server: " + serverUrl + ", room : " + roomId);
+        Timber.e("join called! Server: " + serverUrl + ", room : " + roomId);
 
-    cordova.getActivity().runOnUiThread(new Runnable() {
-      public void run() {
-        Context context = cordova.getActivity();
+        cordova.getActivity().runOnUiThread(() -> {
         URL serverUrlObject;
         try {
           serverUrlObject = new URL(serverUrl);
@@ -170,20 +163,21 @@ public class JitsiPlugin extends CordovaPlugin
             .setFeatureFlag("calendar.enabled", false)
             .setWelcomePageEnabled(false).build();
 
-        JitsiMeetPluginActivity.launchActivity(cordova.getActivity(), options);
-      }
+
+            Intent intent = new Intent(cordova.getActivity(), JitsiMeetPluginActivity.class);
+            intent.setAction("org.jitsi.meet.CONFERENCE");
+            intent.putExtra("JitsiMeetConferenceOptions", options);
+            cordova.getContext().startActivity(intent);
     });
   }
 
   private void destroy(final CallbackContext callbackContext) {
-    cordova.getActivity().runOnUiThread(new Runnable() {
-      public void run() {
+        cordova.getActivity().runOnUiThread(() -> {
         JitsiMeetActivityDelegate.onHostDestroy(cordova.getActivity());
         cordova.getActivity().setContentView(getView());
         PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, "DESTROYED");
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
-      }
     });
   }
 
@@ -223,17 +217,29 @@ public class JitsiPlugin extends CordovaPlugin
   @Override
   public void stateChanged() {
     _conferenceState = JitsiPluginModel.getInstance().getState();
-    Log.d(TAG, "MainActivity says: Model state changed: " + _conferenceState);
+        Timber.d("MainActivity says: Model state changed: %s", _conferenceState);
     cordova.getActivity().setContentView(getView());
     String m = "";
 
     switch (_conferenceState){
-      case "onConferenceTerminated":
-        m = "CONFERENCE_TERMINATED";
-        break;
+		case "onConferenceJoined":
+		    m = "CONFERENCE_JOINED";
+		    break;
+		case "onConferenceWillJoin":
+		    m = "CONFERENCE_WILL_JOIN";
+		    break;
+		case "onConferenceTerminated":
+			m = "CONFERENCE_TERMINATED";
+	        break;
+		case "onConferenceFinished":
+		    m = "CONFERENCE_FINISHED";
+		    break;
+		case "onConferenceDestroyed":
+		    m = "CONFERENCE_DESTROYED";
+		    break;
     }
 
-    if(m != "") {
+    if (!m.equals("")) {
       PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, m);
       pluginResult.setKeepCallback(true);
       _callback.sendPluginResult(pluginResult);
