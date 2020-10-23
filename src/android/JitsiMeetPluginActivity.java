@@ -20,9 +20,8 @@ public class JitsiMeetPluginActivity extends JitsiMeetActivity {
     public static final String APP_HAS_STOPPED = "APP_HAS_STOPPED";
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        JitsiPluginModel.getInstance().changeState("onConferenceTerminated");
+    public void onRequestPermissionsResult(final int requestCode, final String[] permissions, final int[] grantResults) {
+        JitsiMeetActivityDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -81,20 +80,49 @@ public class JitsiMeetPluginActivity extends JitsiMeetActivity {
     }
 
     @Override
-    public void onConferenceJoined(Map<String, Object> data) {
-        JitsiPluginModel.getInstance().changeState("onConferenceJoined");
-        super.onConferenceJoined(data);
+    public boolean shouldShowRequestPermissionRationale(String permissions) {
+        return true;
     }
 
     @Override
-    public void onConferenceTerminated(Map<String, Object> data) {
-        JitsiPluginModel.getInstance().changeState("onConferenceTerminated");
-        super.onConferenceTerminated(data);
+    public int checkSelfPermission(String permission) {
+        return 0;
     }
 
     @Override
-    public void onConferenceWillJoin(Map<String, Object> data) {
-        JitsiPluginModel.getInstance().changeState("onConferenceWillJoin");
-        super.onConferenceWillJoin(data);
+    public int checkPermission(String permission, int pid, int uid) {
+        return 0;
+    }
+
+    @Override
+    public void stateChanged() {
+        _conferenceState = JitsiPluginModel.getInstance().getState();
+        Timber.d("MainActivity says: Model state changed: %s", _conferenceState);
+        cordova.getActivity().setContentView(getView());
+        String m = "";
+
+        switch (_conferenceState) {
+            case "onConferenceJoined":
+                m = "CONFERENCE_JOINED";
+                break;
+            case "onConferenceWillJoin":
+                m = "CONFERENCE_WILL_JOIN";
+                break;
+            case "onConferenceTerminated":
+                m = "CONFERENCE_TERMINATED";
+                break;
+            case "onConferenceFinished":
+                m = "CONFERENCE_FINISHED";
+                break;
+            case "onConferenceDestroyed":
+                m = "CONFERENCE_DESTROYED";
+                break;
+        }
+
+        if (!m.equals("")) {
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, m);
+            pluginResult.setKeepCallback(true);
+            _callback.sendPluginResult(pluginResult);
+        }
     }
 }
