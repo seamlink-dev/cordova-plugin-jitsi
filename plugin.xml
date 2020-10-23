@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id='cordova-plugin-jitsi' version='1.0.2' xmlns='http://apache.org/cordova/ns/plugins/1.0' xmlns:android='http://schemas.android.com/apk/res/android'>
+<plugin id='cordova-plugin-jitsi' version='1.0.2'
+	xmlns='http://apache.org/cordova/ns/plugins/1.0'
+	xmlns:android='http://schemas.android.com/apk/res/android'>
 	<name>JitsiPlugin</name>
 	<js-module name='JitsiPlugin' src='www/JitsiPlugin.js'>
 		<clobbers target='jitsiplugin' />
@@ -23,9 +25,25 @@
 			<uses-permission android:name="android.permission.WAKE_LOCK" />
 			<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 		</config-file>
-		<source-file src='src/android/JitsiMeetPluginActivity.java' target-dir='src/com/cordova/plugin/jitsi/' />
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<activity 
+				android:name="com.cordova.plugin.jitsi.JitsiMeetPluginActivity" 
+				android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize" 
+				android:launchMode="singleTask" 
+				android:resizeableActivity="true" 
+				android:supportsPictureInPicture="true" 
+				android:theme="@style/Theme.AppCompat" 
+				android:parentActivityName=".MainActivity" 
+				android:allowTaskReparenting="true" 
+				android:taskAffinity=".com.cordova.plugin.jitsi.JitsiMeetPluginActivity" 
+				android:windowSoftInputMode="adjustResize">
+			</activity>
+        	<service android:name="com.cordova.plugin.jitsi.JitsiService" android:stopWithTask="false" />
+		</config-file>
 		<source-file src='src/android/JitsiPlugin.java' target-dir='src/com/cordova/plugin/jitsi/' />
 		<source-file src='src/android/JitsiPluginModel.java' target-dir='src/com/cordova/plugin/jitsi/' />
+		<source-file src='src/android/JitsiMeetPluginActivity.java' target-dir='src/com/cordova/plugin/jitsi/' />
+		<source-file src='src/android/JitsiService.java' target-dir='src/com/cordova/plugin/jitsi/' />
 		<framework src='src/android/jitsiplugin.gradle' custom='true' type='gradleReference' />
 	</platform>
 
@@ -36,23 +54,21 @@
                 <param name="ios-package" value="JitsiPlugin"/>
             </feature>
         </config-file>
-
-	<header-file src="src/ios/JitsiMeetView.h" />
-	<header-file src="src/ios/JitsiMeetViewDelegate.h" />
-        <header-file src="src/ios/JitsiPlugin.h" />
-        <source-file src="src/ios/JitsiPlugin.mm" />
-
-        <source-file src="./framework/JitsiMeet.framework" target-dir="lib" framework="true" />
-	<source-file src="./framework/WebRTC.framework"    target-dir="lib" framework="true" />
-	<framework src="./framework/JitsiMeet.framework" custom="true" embed="true" />
-	<framework src="./framework/WebRTC.framework"    custom="true" embed="true" />
-
         <config-file target="*-Info.plist" parent="UIBackgroundModes">
             <array>
                 <string>audio</string>
                 <string>voip</string>
             </array>
         </config-file>
-
+		<header-file src="src/ios/JitsiMeetView.h" />
+		<header-file src="src/ios/JitsiMeetViewDelegate.h" />
+		<header-file src="src/ios/JitsiPlugin.h" />
+		<source-file src="src/ios/JitsiPlugin.mm" />
+		<podspec>
+			<config></config>
+			<pods use-frameworks="true">
+				<pod name="JitsiMeetSDK" git="https://github.com/seamlink-dev/jitsi-meet-ios-sdk-releases.git" tag="2.10.2.1"/>
+			</pods>
+		</podspec>
     </platform>
 </plugin>

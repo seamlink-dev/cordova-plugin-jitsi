@@ -1,6 +1,5 @@
 #import "JitsiPlugin.h"
-#import "JitsiMeet.framework/Headers/JitsiMeetConferenceOptions.h"
-
+#import <JitsiMeet/JitsiMeetConferenceOptions.h>
 
 @implementation JitsiPlugin
 
@@ -23,6 +22,10 @@ CDVPluginResult *pluginResult = nil;
         builder.token = token;
         builder.welcomePageEnabled = NO;
         builder.audioOnly = isAudioOnly;
+        [builder setFeatureFlag:@"chat.enabled" withBoolean:true];
+        [builder setFeatureFlag:@"invite.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"calendar.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"pip.enabled" withBoolean:true];
     }];
     
     [jitsiMeetView join: options];
@@ -88,6 +91,9 @@ void _onJitsiMeetViewDelegateEvent(NSString *name, NSDictionary *data) {
     [pluginResult setKeepCallbackAsBool:YES];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
 }
+
+//- (void)enterPictureInPicture:(NSDictionary *)data {
+//}
 
 
 @end
