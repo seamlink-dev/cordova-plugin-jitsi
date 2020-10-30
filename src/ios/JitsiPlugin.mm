@@ -26,6 +26,17 @@ CDVPluginResult *pluginResult = nil;
         [builder setFeatureFlag:@"invite.enabled" withBoolean:false];
         [builder setFeatureFlag:@"calendar.enabled" withBoolean:false];
         [builder setFeatureFlag:@"pip.enabled" withBoolean:true];
+        [builder setFeatureFlag:@"call-integration.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"close-captions.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"ios.recording.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"kick-out.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"live-streaming.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"meeting-name.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"meeting-password.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"raise-hand.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"recording.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"server-url-change.enabled" withBoolean:false];
+        [builder setFeatureFlag:@"video-share.enabled" withBoolean:false];
     }];
     
     [jitsiMeetView join: options];

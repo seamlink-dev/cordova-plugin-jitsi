@@ -161,6 +161,17 @@ public class JitsiPlugin extends CordovaPlugin
             .setFeatureFlag("chat.enabled", true)
             .setFeatureFlag("invite.enabled", false)
             .setFeatureFlag("calendar.enabled", false)
+            .setFeatureFlag("call-integration.enabled", false)
+            .setFeatureFlag("close-captions.enabled", false)
+            .setFeatureFlag("ios.recording.enabled", false)
+            .setFeatureFlag("kick-out.enabled", false)
+            .setFeatureFlag("live-streaming.enabled", false)
+            .setFeatureFlag("meeting-name.enabled", false)
+            .setFeatureFlag("meeting-password.enabled", false)
+            .setFeatureFlag("raise-hand.enabled", false)
+            .setFeatureFlag("recording.enabled", false)
+            .setFeatureFlag("server-url-change.enabled", false)
+            .setFeatureFlag("video-share.enabled", false)
             .setWelcomePageEnabled(false).build();
 
 
