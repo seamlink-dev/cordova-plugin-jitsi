@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import org.jitsi.meet.sdk.JitsiMeetActivity;
+import org.jitsi.meet.sdk.JitsiMeetActivityDelegate;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -80,49 +83,20 @@ public class JitsiMeetPluginActivity extends JitsiMeetActivity {
     }
 
     @Override
-    public boolean shouldShowRequestPermissionRationale(String permissions) {
-        return true;
+    public void onConferenceJoined(Map<String, Object> data) {
+        JitsiPluginModel.getInstance().changeState("onConferenceJoined");
+        super.onConferenceJoined(data);
     }
 
     @Override
-    public int checkSelfPermission(String permission) {
-        return 0;
+    public void onConferenceTerminated(Map<String, Object> data) {
+        JitsiPluginModel.getInstance().changeState("onConferenceTerminated");
+        super.onConferenceTerminated(data);
     }
 
     @Override
-    public int checkPermission(String permission, int pid, int uid) {
-        return 0;
-    }
-
-    @Override
-    public void stateChanged() {
-        _conferenceState = JitsiPluginModel.getInstance().getState();
-        Timber.d("MainActivity says: Model state changed: %s", _conferenceState);
-        cordova.getActivity().setContentView(getView());
-        String m = "";
-
-        switch (_conferenceState) {
-            case "onConferenceJoined":
-                m = "CONFERENCE_JOINED";
-                break;
-            case "onConferenceWillJoin":
-                m = "CONFERENCE_WILL_JOIN";
-                break;
-            case "onConferenceTerminated":
-                m = "CONFERENCE_TERMINATED";
-                break;
-            case "onConferenceFinished":
-                m = "CONFERENCE_FINISHED";
-                break;
-            case "onConferenceDestroyed":
-                m = "CONFERENCE_DESTROYED";
-                break;
-        }
-
-        if (!m.equals("")) {
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, m);
-            pluginResult.setKeepCallback(true);
-            _callback.sendPluginResult(pluginResult);
-        }
+    public void onConferenceWillJoin(Map<String, Object> data) {
+        JitsiPluginModel.getInstance().changeState("onConferenceWillJoin");
+        super.onConferenceWillJoin(data);
     }
 }
