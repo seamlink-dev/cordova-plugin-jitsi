@@ -154,7 +154,7 @@ public class JitsiPlugin extends CordovaPlugin
         }
 
         JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
-            .setRoom(serverUrlObject.getProtocol() + "://" + serverUrlObject.getHost() + "/" +roomId)
+            .setRoom(serverUrl + "/" + roomId)
             .setSubject(" ")
             .setToken(token)
             .setAudioOnly(audioOnly)
