@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import org.jitsi.meet.sdk.BroadcastEvent;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetActivityDelegate;
 
@@ -57,16 +58,35 @@ public class JitsiMeetPluginActivity extends JitsiMeetActivity {
         super.onCreate(savedInstanceState);
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(APP_HAS_STOPPED);
+
+        filter.addAction(BroadcastEvent.Type.CONFERENCE_JOINED.getAction());
 
         BroadcastReceiver mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                finish();
+                if (intent != null) {
+                    BroadcastEvent event = new BroadcastEvent(intent);
+                    switch(event.getType()) {
+                        case CONFERENCE_JOINED:
+                            JitsiPluginModel.getInstance().changeState("onConferenceJoined");
+                            break;
+                        case CONFERENCE_WILL_JOIN:
+                            JitsiPluginModel.getInstance().changeState("onConferenceWillJoin");
+                            break;
+                        case CONFERENCE_TERMINATED:
+                            JitsiPluginModel.getInstance().changeState("onConferenceTerminated");
+                            break;
+                        case PARTICIPANT_JOINED:
+                            JitsiPluginModel.getInstance().changeState("onParticipantJoined");
+                            break;
+                        case PARTICIPANT_LEFT:
+                            JitsiPluginModel.getInstance().changeState("onParticipantLeft");
+                    }
+                }
             }
         };
 
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReceiver, filter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, filter);
         startService(new Intent(getApplicationContext(), JitsiService.class));
     }
 
@@ -79,24 +99,5 @@ public class JitsiMeetPluginActivity extends JitsiMeetActivity {
         finishAndRemoveTask();
         JitsiPluginModel.getInstance().changeState("onConferenceTerminated");
         super.finish();
-
-    }
-
-    @Override
-    public void onConferenceJoined(Map<String, Object> data) {
-        JitsiPluginModel.getInstance().changeState("onConferenceJoined");
-        super.onConferenceJoined(data);
-    }
-
-    @Override
-    public void onConferenceTerminated(Map<String, Object> data) {
-        JitsiPluginModel.getInstance().changeState("onConferenceTerminated");
-        super.onConferenceTerminated(data);
-    }
-
-    @Override
-    public void onConferenceWillJoin(Map<String, Object> data) {
-        JitsiPluginModel.getInstance().changeState("onConferenceWillJoin");
-        super.onConferenceWillJoin(data);
     }
 }
