@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <JitsiMeet/JitsiMeetConferenceOptions.h>
+#import <JitsiMeetSDK/JitsiMeetConferenceOptions.h>
 
 #import "JitsiMeetViewDelegate.h"
 
