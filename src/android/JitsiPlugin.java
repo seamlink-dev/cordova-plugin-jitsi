@@ -175,7 +175,6 @@ public class JitsiPlugin extends CordovaPlugin
             .setFeatureFlag("welcomepage.enabled", false)
             .build();
 
-
             Intent intent = new Intent(cordova.getActivity(), JitsiMeetPluginActivity.class);
             intent.setAction("org.jitsi.meet.CONFERENCE");
             intent.putExtra("JitsiMeetConferenceOptions", options);
