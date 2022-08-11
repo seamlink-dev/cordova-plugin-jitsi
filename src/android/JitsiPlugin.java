@@ -172,7 +172,8 @@ public class JitsiPlugin extends CordovaPlugin
             .setFeatureFlag("recording.enabled", false)
             .setFeatureFlag("server-url-change.enabled", false)
             .setFeatureFlag("video-share.enabled", false)
-            .setWelcomePageEnabled(false).build();
+            .setFeatureFlag("welcomepage.enabled", false)
+            .build();
 
 
             Intent intent = new Intent(cordova.getActivity(), JitsiMeetPluginActivity.class);
