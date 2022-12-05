@@ -41,7 +41,6 @@ CDVPluginResult *pluginResult = nil;
         [builder setFeatureFlag:@"help.enabled" withBoolean:false];
         [builder setFeatureFlag:@"lobby-mode.enabled" withBoolean:false];
         [builder setFeatureFlag:@"server-url-change.enabled" withBoolean:false];
-        [builder setConfigOverride:@"requireDisplayName" withBoolean:YES];
     }];
     
     [jitsiMeetView join: options];
