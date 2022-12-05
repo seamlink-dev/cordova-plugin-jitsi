@@ -18,7 +18,7 @@
     "cordova-android",
     "cordova-ios"
   ],
-  "author": "gaganinvic",
+  "author": "Seamlink",
   "license": "Auris",
   "bugs": {
     "url": "https://github.com/seamlink-dev/cordova-plugin-jitsi/issues"

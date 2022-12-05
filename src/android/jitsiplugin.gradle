@@ -3,9 +3,9 @@ repositories{
 	maven {
 		url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
 	}
-	maven {
-		url "https://maven.google.com"
-	}
+	google()
+	mavenCentral()
+	maven { url 'https://www.jitpack.io' }
 	configurations.all {
 		resolutionStrategy {
 			force "com.google.android.gms:play-services-basement:15.0.1"
@@ -14,12 +14,12 @@ repositories{
 	}
 }
 android {
-	compileSdkVersion 29
-    	buildToolsVersion "26.0.1"
+	compileSdkVersion 31
+    buildToolsVersion "26.0.1"
     
 	defaultConfig {
-		minSdkVersion 21
-		targetSdkVersion 29
+		minSdkVersion 23
+		targetSdkVersion 31
 		multiDexEnabled true
 		ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
@@ -36,15 +36,29 @@ android {
 		}
 	}
 	
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://facebook.github.io/react-native/docs/signed-apk-android.
+            signingConfig signingConfigs.debug
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+	
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_8
 		targetCompatibility JavaVersion.VERSION_1_8
 	}
 }
 dependencies {
-	implementation  ('org.jitsi.react:jitsi-meet-sdk:3.+') {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+	implementation  ('org.jitsi.react:jitsi-meet-sdk:5+') {
 		transitive = true;
 	}
-	implementation 'androidx.appcompat:appcompat:1.1.0'
-   	implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+	implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 }

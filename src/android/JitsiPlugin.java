@@ -159,6 +159,7 @@ public class JitsiPlugin extends CordovaPlugin
             .setToken(token)
             .setAudioOnly(audioOnly)
             .setFeatureFlag("chat.enabled", true)
+            .setFeatureFlag("add-people.enabled", false)
             .setFeatureFlag("invite.enabled", false)
             .setFeatureFlag("calendar.enabled", false)
             .setFeatureFlag("call-integration.enabled", false)
@@ -173,6 +174,10 @@ public class JitsiPlugin extends CordovaPlugin
             .setFeatureFlag("server-url-change.enabled", false)
             .setFeatureFlag("video-share.enabled", false)
             .setFeatureFlag("welcomepage.enabled", false)
+            .setFeatureFlag("help.enabled", false)
+            .setFeatureFlag("lobby-mode.enabled", false)
+            .setFeatureFlag("server-url-change.enabled", false)
+            .setConfigOverride("requireDisplayName", false)
             .build();
 
             Intent intent = new Intent(cordova.getActivity(), JitsiMeetPluginActivity.class);
