@@ -2,8 +2,9 @@
 #import <JitsiMeetSDK/JitsiMeetConferenceOptions.h>
 
 @implementation JitsiPlugin
-
-CDVPluginResult *pluginResult = nil;
+{
+    CDVPluginResult *pluginResult;
+}
 
 - (void)join:(CDVInvokedUrlCommand *)command {
     NSString* serverUrl = [command.arguments objectAtIndex:0];
