@@ -125,22 +125,6 @@ public class JitsiPlugin extends CordovaPlugin
     }
   }
 
-  public void onRequestPermissionResult(int requestCode, String[] permissions,
-                                        int[] grantResults) throws JSONException
-  {
-    for(int r:grantResults)
-    {
-      if(r == PackageManager.PERMISSION_DENIED)
-      {
-        this._callback.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, PERMISSION_DENIED_ERROR));
-        return;
-      }
-    }
-        if (requestCode == TAKE_PIC_SEC) {
-        join(this.serverUrl, this.roomId, this.audioOnly, this.token);
-    }
-  }
-
   private void join(final String serverUrl, final String roomId, final Boolean audioOnly, final String token) {
         Timber.e("join called! Server: " + serverUrl + ", room : " + roomId);
 
