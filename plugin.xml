@@ -67,7 +67,7 @@
 		<podspec>
 			<config></config>
 			<pods use-frameworks="true">
-				<pod name="JitsiMeetSDK" git="https://github.com/jitsi/jitsi-meet-ios-sdk-releases.git" tag="3.5.0"/>
+				<pod name="JitsiMeetSDK" git="https://github.com/jitsi/jitsi-meet-ios-sdk-releases.git" tag="8.5.0"/>
 			</pods>
 		</podspec>
     </platform>
