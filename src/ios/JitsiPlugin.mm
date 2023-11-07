@@ -21,8 +21,8 @@
         builder.room = room;
         builder.subject = @" ";
         builder.token = token;
-        builder.welcomePageEnabled = NO;
         builder.audioOnly = isAudioOnly;
+        [builder setFeatureFlag:@"welcomepage.enabled" withBoolean:false];
         [builder setFeatureFlag:@"chat.enabled" withBoolean:true];
         [builder setFeatureFlag:@"invite.enabled" withBoolean:false];
         [builder setFeatureFlag:@"add-people.enabled" withBoolean:false];
