@@ -162,6 +162,7 @@ public class JitsiPlugin extends CordovaPlugin
             .setFeatureFlag("lobby-mode.enabled", false)
             .setFeatureFlag("server-url-change.enabled", false)
             .setConfigOverride("requireDisplayName", false)
+            .setConfigOverride("disableModeratorIndicator", true)
             .build();
 
             Intent intent = new Intent(cordova.getActivity(), JitsiMeetPluginActivity.class);

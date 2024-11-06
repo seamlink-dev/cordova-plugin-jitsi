@@ -42,6 +42,8 @@
         [builder setFeatureFlag:@"help.enabled" withBoolean:false];
         [builder setFeatureFlag:@"lobby-mode.enabled" withBoolean:false];
         [builder setFeatureFlag:@"server-url-change.enabled" withBoolean:false];
+        [builder setConfigOverride:@"requireDisplayName" withBoolean:false];
+        [builder setConfigOverride:@"disableModeratorIndicator", withBoolean:true];
     }];
     
     [jitsiMeetView join: options];
