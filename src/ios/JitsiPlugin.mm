@@ -3,7 +3,7 @@
 
 @implementation JitsiPlugin
 {
-    CDVPluginResult *pluginResult;
+    CDVPluginResult *plgResult;
 }
 
 - (void)join:(CDVInvokedUrlCommand *)command {
@@ -56,8 +56,8 @@
         [jitsiMeetView removeFromSuperview];
         jitsiMeetView = nil;
     }
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"DESTROYED"];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    plgResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"DESTROYED"];
+    [self.commandDelegate sendPluginResult:plgResult callbackId:command.callbackId];
 }
 
 void _onJitsiMeetViewDelegateEvent(NSString *name, NSDictionary *data) {
@@ -69,45 +69,45 @@ void _onJitsiMeetViewDelegateEvent(NSString *name, NSDictionary *data) {
 
 - (void)conferenceFailed:(NSDictionary *)data {
     _onJitsiMeetViewDelegateEvent(@"CONFERENCE_FAILED", data);
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_FAILED"];
-    [pluginResult setKeepCallbackAsBool:YES];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
+    plgResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_FAILED"];
+    [plgResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:plgResult callbackId:commandBack.callbackId];
 }
 
 - (void)conferenceJoined:(NSDictionary *)data {
     _onJitsiMeetViewDelegateEvent(@"CONFERENCE_JOINED", data);
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_JOINED"];
-    [pluginResult setKeepCallbackAsBool:YES];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
+    plgResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_JOINED"];
+    [plgResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:plgResult callbackId:commandBack.callbackId];
 }
 
 - (void)conferenceLeft:(NSDictionary *)data {
     _onJitsiMeetViewDelegateEvent(@"CONFERENCE_LEFT", data);
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_LEFT"];
-    [pluginResult setKeepCallbackAsBool:YES];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
+    plgResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_LEFT"];
+    [plgResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:plgResult callbackId:commandBack.callbackId];
 
 }
 
 - (void)conferenceWillJoin:(NSDictionary *)data {
     _onJitsiMeetViewDelegateEvent(@"CONFERENCE_WILL_JOIN", data);
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_WILL_JOIN"];
-    [pluginResult setKeepCallbackAsBool:YES];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
+    plgResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_WILL_JOIN"];
+    [plgResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:plgResult callbackId:commandBack.callbackId];
 }
 
 - (void)conferenceTerminated:(NSDictionary *)data {
     _onJitsiMeetViewDelegateEvent(@"CONFERENCE_TERMINATED", data);
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_TERMINATED"];
-    [pluginResult setKeepCallbackAsBool:YES];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
+    plgResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_TERMINATED"];
+    [plgResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:plgResult callbackId:commandBack.callbackId];
 }
 
 - (void)loadConfigError:(NSDictionary *)data {
     _onJitsiMeetViewDelegateEvent(@"LOAD_CONFIG_ERROR", data);
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"LOAD_CONFIG_ERROR"];
-    [pluginResult setKeepCallbackAsBool:YES];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
+    plgResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"LOAD_CONFIG_ERROR"];
+    [plgResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:plgResult callbackId:commandBack.callbackId];
 }
 
 //- (void)enterPictureInPicture:(NSDictionary *)data {
