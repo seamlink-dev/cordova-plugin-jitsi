@@ -14,12 +14,12 @@ repositories{
 	}
 }
 android {
-	compileSdkVersion 33
+	compileSdkVersion 35
     buildToolsVersion "26.0.1"
     
 	defaultConfig {
 		minSdkVersion 23
-		targetSdkVersion 33
+		targetSdkVersion 35
 		multiDexEnabled true
 		ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
