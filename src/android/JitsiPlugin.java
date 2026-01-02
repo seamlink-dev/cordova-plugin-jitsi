@@ -78,6 +78,9 @@ public class JitsiPlugin extends CordovaPlugin
                     case PARTICIPANT_LEFT:
                         eventName = "PARTICIPANT_LEFT";
                         break;
+                    case READY_TO_CLOSE:
+                        eventName = "READY_TO_CLOSE";
+                        break;
                 }
 
                 if (!eventName.isEmpty() && _callback != null) {
@@ -109,6 +112,7 @@ public class JitsiPlugin extends CordovaPlugin
         filter.addAction(BroadcastEvent.Type.CONFERENCE_TERMINATED.getAction());
         filter.addAction(BroadcastEvent.Type.PARTICIPANT_JOINED.getAction());
         filter.addAction(BroadcastEvent.Type.PARTICIPANT_LEFT.getAction());
+        filter.addAction(BroadcastEvent.Type.READY_TO_CLOSE.getAction());
         return filter;
     }
 
@@ -140,41 +144,9 @@ public class JitsiPlugin extends CordovaPlugin
     // needed.
     private void callJoin(String serverUrl, String roomId, Boolean audioOnly, String token)
             throws NameNotFoundException {
-        boolean takePicturePermission = PermissionHelper.hasPermission(this, Manifest.permission.CAMERA);
-        boolean micPermission = PermissionHelper.hasPermission(this, Manifest.permission.RECORD_AUDIO);
 
-        // CB-10120: The CAMERA permission does not need to be requested unless it is
-        // declared
-        // in AndroidManifest.xml. This plugin does not declare it, but others may and
-        // so we must
-        // check the package info to determine if the permission is present.
-
-        Timber.e("tp : %s", takePicturePermission);
-        Timber.e("mp : %s", micPermission);
-
-        if (!takePicturePermission) {
-            takePicturePermission = true;
-
-            PackageManager packageManager = this.cordova.getActivity().getPackageManager();
-            String[] permissionsInPackage = packageManager.getPackageInfo(this.cordova.getActivity().getPackageName(),
-                    PackageManager.GET_PERMISSIONS).requestedPermissions;
-
-            if (permissionsInPackage != null) {
-                for (String permission : permissionsInPackage) {
-                    if (permission.equals(Manifest.permission.CAMERA)) {
-                        takePicturePermission = false;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (!takePicturePermission) {
-            PermissionHelper.requestPermissions(this, TAKE_PIC_SEC,
-                    new String[] { Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO });
-        } else {
             this.join(serverUrl, roomId, audioOnly, token);
-        }
+
     }
 
     private void join(final String serverUrl, final String roomId, final Boolean audioOnly, final String token) {
