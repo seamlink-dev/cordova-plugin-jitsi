@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-jitsimeet",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "\n       This is plugin for Jitsi Meet calling service!\n    ",
   "cordova": {
     "id": "cordova-plugin-jitsimeet",
