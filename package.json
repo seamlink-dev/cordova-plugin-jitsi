@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-jitsi",
+  "name": "cordova-plugin-jitsimeet",
   "version": "2.0.0",
   "description": "\n       This is plugin for Jitsi Meet calling service!\n    ",
   "cordova": {
-    "id": "cordova-plugin-jitsi",
+    "id": "cordova-plugin-jitsimeet",
     "platforms": [
       "android",
       "ios"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/seamlink-dev/cordova-plugin-jitsi.git"
+    "url": "git+https://github.com/seamlink-dev/cordova-plugin-jitsimeet.git"
   },
   "keywords": [
     "ecosystem:cordova",
@@ -21,7 +21,7 @@
   "author": "Seamlink",
   "license": "Auris",
   "bugs": {
-    "url": "https://github.com/seamlink-dev/cordova-plugin-jitsi/issues"
+    "url": "https://github.com/seamlink-dev/cordova-plugin-jitsimeet/issues"
   },
-  "homepage": "https://github.com/seamlink-dev/cordova-plugin-jitsi#readme"
+  "homepage": "https://github.com/seamlink-dev/cordova-plugin-jitsimeet#readme"
 }
