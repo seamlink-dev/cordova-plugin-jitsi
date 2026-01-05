@@ -103,6 +103,13 @@ void _onJitsiMeetViewDelegateEvent(NSString *name, NSDictionary *data) {
     [self.commandDelegate sendPluginResult:plgResult callbackId:commandBack.callbackId];
 }
 
+- (void)readyToClose:(NSDictionary *)data {
+    _onJitsiMeetViewDelegateEvent(@"READY_TO_CLOSE", data);
+    plgResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"READY_TO_CLOSE"];
+    [plgResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:plgResult callbackId:commandBack.callbackId];
+}
+
 - (void)loadConfigError:(NSDictionary *)data {
     _onJitsiMeetViewDelegateEvent(@"LOAD_CONFIG_ERROR", data);
     plgResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"LOAD_CONFIG_ERROR"];

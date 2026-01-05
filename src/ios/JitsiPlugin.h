@@ -15,6 +15,7 @@
 - (void)conferenceLeft:(NSDictionary *)data;
 - (void)conferenceWillJoin:(NSDictionary *)data;
 - (void)conferenceTerminated:(NSDictionary *)data;
+- (void)readyToClose:(NSDictionary *)data;
 - (void)loadConfigError:(NSDictionary *)data;
 
 @end
