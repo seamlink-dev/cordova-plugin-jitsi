@@ -18,7 +18,7 @@ jitsiplugin.join('https://meet.jit.si/', roomId, false, (data) => {
     //CONFERENCE_TERMINATED
     //CONFERENCE_FINISHED
     //CONFERENCE_DESTROYED
-    if (data === "CONFERENCE_TERMINATED") {
+    if (["CONFERENCE_TERMINATED", "READY_TO_CLOSE"].includes(data)) {
         jitsiplugin.destroy((data) => {
             // call finished
         }, f(err) => {
