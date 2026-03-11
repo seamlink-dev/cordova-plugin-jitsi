@@ -1,6 +1,6 @@
 {
   "name": "@seamlink/cordova-plugin-jitsi",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "\n       This is plugin for Jitsi Meet calling service!\n    ",
   "cordova": {
     "id": "@seamlink/cordova-plugin-jitsi",
