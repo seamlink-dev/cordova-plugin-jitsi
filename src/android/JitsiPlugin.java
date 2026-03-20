@@ -138,10 +138,6 @@ public class JitsiPlugin extends CordovaPlugin
         return false;
     }
 
-    // ... all your other methods (callJoin, join, destroy, etc.) remain the same
-    // ...
-    // You can now completely remove the stateChanged() method as it is no longer
-    // needed.
     private void callJoin(String serverUrl, String roomId, Boolean audioOnly, String token)
             throws NameNotFoundException {
 
@@ -196,8 +192,6 @@ public class JitsiPlugin extends CordovaPlugin
 
     private void destroy(final CallbackContext callbackContext) {
         cordova.getActivity().runOnUiThread(() -> {
-            JitsiMeetActivityDelegate.onHostDestroy(cordova.getActivity());
-            cordova.getActivity().setContentView(getView());
             PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, "DESTROYED");
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
